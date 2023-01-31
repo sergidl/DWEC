@@ -36,10 +36,19 @@
 
 <form action="none">
 	<label for="day">Dia</label>
-	<input type="number" name="day" id="day" max="31" min="1" required>
+	<select name="day" id="day">
+		<option value="1">Lunes</option>
+		<option value="2">Martes</option>
+		<option value="3">Miércoles</option>
+		<option value="4">Jueves</option>
+		<option value="5">Viernes</option>
+		<option value="6">Sábado</option>
+		<option value="7">Domingo</option>
+	</select>
 	<label for="hours">Horas</label>
 	<input type="number" name="hours" id="hours" max="24" min="1" required>
 	<button type="button" id="send" onclick="time()">Confirma</button>
+	<button type="button" id="clear" onclick="clearStorage()">Clear All</button>
 </form>
 
 	<table id="calendar">
@@ -53,54 +62,20 @@
 			<th>Domingo</th>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td>1<span id="1">time:</span></td>
-			<td>2<span id="2">time:</span></td>
-			<td>3<span id="3">time:</span></td>
-			<td>4<span id="4">time:</span></td>
+			<td><span id="1">time:</span></td>
+			<td><span id="2">time:</span></td>
+			<td><span id="3">time:</span></td>
+			<td><span id="4">time:</span></td>
+			<td><span id="5">time:</span></td>
+			<td><span id="6">time:</span></td>
+			<td><span id="7">time:</span></td>
 		</tr>
-		<tr>
-			<td>5<span id="5">time:</span></td>
-			<td>6<span id="6">time:</span></td>
-			<td>7<span id="7">time:</span></td>
-			<td>8<span id="8">time:</span></td>
-			<td>9<span id="9">time:</span></td>
-			<td>10<span id="10">time:</span></td>
-			<td>11<span id="11">time:</span></td>
-		</tr>
-		<tr>
-			<td>12<span id="12">time:</span></td>
-			<td>13<span id="13">time:</span></td>
-			<td>14<span id="14">time:</span></td>
-			<td>15<span id="15">time:</span></td>
-			<td>16<span id="16">time:</span></td>
-			<td>17<span id="17">time:</span></td>
-			<td>18<span id="18">time:</span></td>
-		</tr>
-		<tr>
-			<td>19<span id="19">time:</span></td>
-			<td>20<span id="20">time:</span></td>
-			<td>21<span id="21">time:</span></td>
-			<td>22<span id="22">time:</span></td>
-			<td>23<span id="23">time:</span></td>
-			<td>24<span id="24">time:</span></td>
-			<td>25<span id="25">time:</span></td>
-		</tr>
-		<tr>
-			<td>26<span id="26">time:</span></td>
-			<td>27<span id="27">time:</span></td>
-			<td>28<span id="28">time:</span></td>
-			<td>29<span id="29">time:</span></td>
-			<td>30<span id="30">time:</span></td>
-			<td>31<span id="31">time:</span></td>
-			<td></td>
-		</tr>
+	
 	</table>
 
 	<span>Horas a hacer: 100</span>
-	<p>Horas hechas: <span id="sum"></span></p>
+	<p>Horas por semana: <span id="sum"></span></p>
+	<p>ETA: <span id="date"></span></p>
 
 </body>
 

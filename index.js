@@ -1,14 +1,52 @@
-let button=document.getElementById("send")
 function time() {
-	let total=document.getElementById("sum")
-	for (let index = 1; index < 31; index++) {
-		let tmp=document.getElementById(index)
-		console.log(tmp.innerHTML)
-	}
-	let day=document.getElementById("day").value
-	let hours=document.getElementById("hours").value
-	console.log(day)
-	console.log(hours)
-	
+	let day = document.getElementById("day").value
+	let hours = document.getElementById("hours").value
+	localStorage.setItem(day, hours)
+	location.reload()
 }
 
+function recount() {
+	let time = 0
+	let total = document.getElementById("sum")
+	let date = document.getElementById("date")
+	for (let index = 1; index < 8; index++) {
+		var tmp = document.getElementById(index)
+		if (localStorage.getItem(index)) {
+			tmp.innerHTML += localStorage.getItem(index)
+			time += parseInt(localStorage.getItem(index))
+		}
+		else {
+			tmp.innerHTML += 0
+		}
+
+	}
+	total.innerHTML += time
+	let hours = 0;
+	let round=0
+	while (hours < 100) {
+
+		for (let index = 1; index < 8; index++) {
+			hours += parseInt(document.getElementById(index).innerHTML.slice(5))
+			if (hours<100){
+				round++
+			}
+			console.log(hours)
+		}
+		if (hours == 0) {
+			hours = 101
+			round="∞"
+		}
+	}
+	date.innerHTML += round+" dias"
+
+	console.log("restante: "+round)
+
+
+}
+
+function clearStorage() {
+	localStorage.clear()
+	location.reload()
+}
+
+window.addEventListener("load", recount())

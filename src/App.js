@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import "./App.css"
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useObjectives } from './useObjectives.js';
+
+import "./App.css"
 
 // NO MAS DE 100 INTENTOS POR DIA 
 // LIMITE DE LA API
 // INTENTOS ES IGUAL A BORRAR EL LOCALSTORAGE O CAMBIAR HORAS OBJETIVO
 
-function App() {
+function Main() {
 	const [hours, setHours] = useState(0);
 	const [goal, setGoal] = useState(localStorage.getItem("goal") || 0);
 	const [dates, setDates] = useState(localStorage.getItem("dates") || [])
 	const [holidays, setHolidays] = useState([])
 	const [start, setStart] = useState(localStorage.getItem("start") || ((new Date()).getFullYear()) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + (("0" + (new Date()).getDate()).slice(-2)))
 	const [timePerWeek, setTimePerWeek] = useState(0)
-	const [time, setTime] = useState(0)
+	const [objectives, addObjective, updateObjective, deleteObjective] = useObjectives();
+
 	let h = 0;
 	let round = 0;
 	let dayIndex = new Date(start).getDay();
@@ -49,11 +53,11 @@ function App() {
 
 
 	useEffect(() => {
-		
+
 		localStorage.setItem("goal", goal);
 		localStorage.setItem("start", start);
 		recount()
-	}, [goal,start,hours,timePerWeek])
+	}, [goal, start, hours, timePerWeek])
 
 
 	function recount() {
@@ -144,6 +148,17 @@ function App() {
 				<button type="button" id="clear" onClick={clearStorage}>
 					Clear All
 				</button>
+				<input type='button' onClick={
+					() => addObjective(
+						{
+							id: objectives.length,
+							start: start,
+							goal:goal,
+							// end: (t.getFullYear()) + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + (("0" + (t).getDate()).slice(-2)),
+							daysHours:[localStorage.getItem(0),localStorage.getItem(1),localStorage.getItem(2),localStorage.getItem(3),localStorage.getItem(4),localStorage.getItem(5),localStorage.getItem(6)]
+						}
+					)
+				}></input>
 			</form>
 
 			<table id="calendar">
@@ -170,6 +185,11 @@ function App() {
 					</tr>
 				</tbody>
 			</table>
+
+<br/>
+				<span id='objectives'>
+				{objectives.keys()}
+				</span>
 			<span>Horas a hacer: <input type="number" name="goal" id="goal" min="1" required onChange={(e) => setGoal(e.target.value)} value={goal} />
 			</span>
 			<p>Horas por semana: <span id="sum"></span></p>
@@ -178,6 +198,13 @@ function App() {
 	)
 }
 
-
-
+function App() {
+	return (
+		<Router>
+			<Routes>
+				<Route path="/" element={<Main />} />
+			</Routes>
+		</Router>
+	);
+}
 export default App;

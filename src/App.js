@@ -153,9 +153,9 @@ function Main() {
 						{
 							id: objectives.length,
 							start: start,
-							goal:goal,
+							goal: goal,
 							// end: (t.getFullYear()) + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + (("0" + (t).getDate()).slice(-2)),
-							daysHours:[localStorage.getItem(0),localStorage.getItem(1),localStorage.getItem(2),localStorage.getItem(3),localStorage.getItem(4),localStorage.getItem(5),localStorage.getItem(6)]
+							daysHours: [localStorage.getItem(0), localStorage.getItem(1), localStorage.getItem(2), localStorage.getItem(3), localStorage.getItem(4), localStorage.getItem(5), localStorage.getItem(6)]
 						}
 					)
 				}></input>
@@ -186,14 +186,19 @@ function Main() {
 				</tbody>
 			</table>
 
-<br/>
-				<span id='objectives'>
-				{objectives.keys()}
-				</span>
+			<br />
+
 			<span>Horas a hacer: <input type="number" name="goal" id="goal" min="1" required onChange={(e) => setGoal(e.target.value)} value={goal} />
 			</span>
 			<p>Horas por semana: <span id="sum"></span></p>
 			<p>ETA: <span id="date"></span> dias <span id="dia"></span></p>
+
+
+			<ul id='objectives'>
+				{objectives.map((e) => {
+					return (<li>{e.start} - {e.goal} horas</li>)
+				})}
+			</ul>
 		</div>
 	)
 }

@@ -32,3 +32,5 @@ Resultado despues de actualizar objetivo
 
 ## Detalles
 ![Alt text](imgs/2023-05-09%2020_21_32-React_App_-_Brave.png)
+
+Detalles del objetivo

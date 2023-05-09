@@ -23,8 +23,11 @@ Imagen del resultado del boton del tiempo medio
 
 ## Actualizacion de objetivo
 ![Alt text](imgs/2023-05-09%2020_11_06-React_App_-_Brave.png)
+
 Los campos en Actualizar son los mismos que en la creacion del objetivo
+
 ![Alt text](imgs/2023-05-09%2020_21_24-React_App_-_Brave.png)
+
 Resultado despues de actualizar objetivo
 
 ## Detalles

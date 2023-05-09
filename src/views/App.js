@@ -34,6 +34,7 @@ function Main() {
 	const [etaDaysModalUpdate, setEtaDaysModalUpdate] = useState(0)
 	const [holidaysUpdate, setHolidaysUpdate] = useState([])
 	const [media, setMedia] = useState(0)
+	const [porcentaje, setPorcentaje] = useState("")
 
 
 	let h = 0;
@@ -44,7 +45,8 @@ function Main() {
 	let dayIndexUpdate = new Date(startUpdate).getDay();
 	let t = new Date(start);
 	let tUpdate = new Date(startUpdate);
-	let tmp=0
+	let tmp = 0
+	let today = new Date()
 
 	if (typeof (dates) === "string") {
 		setDates(dates.split(','))
@@ -95,10 +97,10 @@ function Main() {
 	useEffect(() => {
 		localStorage.setItem("week", daysModalDetalles);
 		localStorage.setItem("hours", hoursModalDetalles);
-		objectives.map(e=>{
-			tmp+=parseInt(e.etaDays)
+		objectives.map(e => {
+			tmp += parseInt(e.etaDays)
 		})
-		setMedia(tmp/objectives.length)
+		setMedia(tmp / objectives.length)
 	})
 
 	useEffect(() => {
@@ -195,6 +197,7 @@ function Main() {
 
 	return (
 		<div>
+			{`Hoy: ${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`}
 			<form>
 
 				<label htmlFor="start">Dia de inicio </label>
@@ -204,6 +207,7 @@ function Main() {
 
 				<dialog id='detalles'>
 					<h2>Detalles</h2>
+					<p>Porcentaje: {porcentaje}</p>
 					<input type='date' id="start" name='start' value={startDetalles} readOnly />
 					<table id="calendar">
 						<thead>
@@ -345,9 +349,17 @@ function Main() {
 
 			<ul id='objectives'>
 				{objectives.map((e) => {
-					return (<li key={e.id}>{e.start} - {e.goal} horas para completar - {e.totalWeek} horas por semana
-						
-						
+					let dateString = e.etaDate.slice(3); // Oct 23
+					let dateParts = dateString.split("/");
+					let dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+					
+
+					return (<li key={e.id}>{
+						(today.getTime()>(new Date(e.start)).getTime()?Math.round((Math.abs(today-new Date(e.start))/Math.abs(dateObject-new Date(e.start)))*100):"0")+"%"
+
+					} - {e.goal} horas para completar - {e.totalWeek} horas por semana
+
+
 						<input type='button' value={"Borrar"} onClick={() => deleteObjective(e.id)} />
 
 						<input type='button' onClick={() => {
@@ -368,6 +380,7 @@ function Main() {
 							setEtaDateModalDetalles(e.etaDate)
 							setEtaDaysModalDetalles(e.etaDays)
 							setTimePerWeekDetalles(e.totalWeek)
+							setPorcentaje((today.getTime()>(new Date(e.start)).getTime()?Math.round((Math.abs(today-new Date(e.start))/Math.abs(dateObject-new Date(e.start)))*100):"0")+"%")
 							modalDetalles.showModal()
 						}} value="Detalles" />
 
@@ -378,11 +391,11 @@ function Main() {
 			<dialog id='media'>
 				<h2>Media</h2>
 
-					<p>Media de completado de objetivos: <b>{media}</b> dias</p>
-			
-			<input type='button' value="Cerrar" onClick={() => modalMedia.close()}></input>
+				<p>Media de completado de objetivos: <b>{media}</b> dias</p>
+
+				<input type='button' value="Cerrar" onClick={() => modalMedia.close()}></input>
 			</dialog>
-			{objectives.length!==0?<input type='button' value="Calcula media de tiempo" onClick={()=>modalMedia.showModal()}/>:""}
+			{objectives.length !== 0 ? <input type='button' value="Calcula media de tiempo" onClick={() => modalMedia.showModal()} /> : ""}
 		</div>
 	)
 }

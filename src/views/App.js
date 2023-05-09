@@ -33,6 +33,7 @@ function Main() {
 	const [etaDateModalUpdate, setEtaDateModalUpdate] = useState("")
 	const [etaDaysModalUpdate, setEtaDaysModalUpdate] = useState(0)
 	const [holidaysUpdate, setHolidaysUpdate] = useState([])
+	const [media, setMedia] = useState(0)
 
 
 	let h = 0;
@@ -43,6 +44,7 @@ function Main() {
 	let dayIndexUpdate = new Date(startUpdate).getDay();
 	let t = new Date(start);
 	let tUpdate = new Date(startUpdate);
+	let tmp=0
 
 	if (typeof (dates) === "string") {
 		setDates(dates.split(','))
@@ -93,6 +95,10 @@ function Main() {
 	useEffect(() => {
 		localStorage.setItem("week", daysModalDetalles);
 		localStorage.setItem("hours", hoursModalDetalles);
+		objectives.map(e=>{
+			tmp+=parseInt(e.etaDays)
+		})
+		setMedia(tmp/objectives.length)
 	})
 
 	useEffect(() => {
@@ -127,6 +133,7 @@ function Main() {
 			setHolidays(datesBeforeTarget)
 			setDates(dates)
 			localStorage.setItem('dates', dates)
+
 		}
 		sumDays()
 	};
@@ -184,6 +191,7 @@ function Main() {
 	};
 	const modalDetalles = document.getElementById("detalles")
 	const modalUpdate = document.getElementById("update")
+	const modalMedia = document.getElementById("media")
 
 	return (
 		<div>
@@ -338,7 +346,8 @@ function Main() {
 			<ul id='objectives'>
 				{objectives.map((e) => {
 					return (<li key={e.id}>{e.start} - {e.goal} horas para completar - {e.totalWeek} horas por semana
-
+						
+						
 						<input type='button' value={"Borrar"} onClick={() => deleteObjective(e.id)} />
 
 						<input type='button' onClick={() => {
@@ -365,6 +374,15 @@ function Main() {
 					</li>)
 				})}
 			</ul>
+
+			<dialog id='media'>
+				<h2>Media</h2>
+
+					<p>Media de completado de objetivos: <b>{media}</b> dias</p>
+			
+			<input type='button' value="Cerrar" onClick={() => modalMedia.close()}></input>
+			</dialog>
+			{objectives.length!==0?<input type='button' value="Calcula media de tiempo" onClick={()=>modalMedia.showModal()}/>:""}
 		</div>
 	)
 }

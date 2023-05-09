@@ -9,7 +9,6 @@ import "./App.css"
 // INTENTOS ES IGUAL A BORRAR EL LOCALSTORAGE
 
 function Main() {
-	const [hours, setHours] = useState(0);
 	const [goal, setGoal] = useState(localStorage.getItem("goal") || 0);
 	const [dates, setDates] = useState(localStorage.getItem("dates") || [])
 	const [holidays, setHolidays] = useState([])
@@ -25,8 +24,6 @@ function Main() {
 	const [etaDateModalDetalles, setEtaDateModalDetalles] = useState("")
 	const [startDetalles, setStartDetalles] = useState("")
 	const [timePerWeekDetalles, setTimePerWeekDetalles] = useState(0)
-
-
 
 	const [idUpdate, setIdUpdate] = useState(0)
 	const [startUpdate, setStartUpdate] = useState("")
@@ -91,7 +88,7 @@ function Main() {
 		localStorage.setItem("goal", goal);
 		localStorage.setItem("start", start);
 		recount()
-	}, [goal, start, hours, timePerWeek])
+	}, [goal, start, timePerWeek])
 
 	useEffect(() => {
 		localStorage.setItem("week", daysModalDetalles);
@@ -191,6 +188,7 @@ function Main() {
 	return (
 		<div>
 			<form>
+
 				<label htmlFor="start">Dia de inicio </label>
 				<input type='date' id="start" name='start' value={start} onChange={(e) => setStart(e.target.value)} />
 

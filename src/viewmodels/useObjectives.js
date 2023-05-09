@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 export const useObjectives = () => {
-    let list=document.getElementById("objectives")
   const [objectives, setObjectives] = useState(JSON.parse(localStorage.getItem("objectives")) || []);
 
   useEffect(()=>{
@@ -13,7 +12,6 @@ export const useObjectives = () => {
   };
 
   const updateObjective = (updatedObjective) => {
-    console.log(updatedObjective)
     setObjectives(objectives.map(obj => obj.id === updatedObjective.id ? updatedObjective : obj));
   };
 

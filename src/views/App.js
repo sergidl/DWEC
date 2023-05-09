@@ -40,19 +40,19 @@ function Main() {
 
 	let h = 0;
 	let round = 0;
-	// let hUpdate = 0;
-	// let roundUpdate = 0;
+	let hUpdate = 0;
+	let roundUpdate = 0;
 	let dayIndex = new Date(start).getDay();
-	// let dayIndexUpdate = new Date(startUpdate).getDay();
+	let dayIndexUpdate = new Date(startUpdate).getDay();
 	let t = new Date(start);
-	// let tUpdate = new Date(startUpdate);
+	let tUpdate = new Date(startUpdate);
 
 	if (typeof (dates) === "string") {
 		setDates(dates.split(','))
 	}
 
 	let daysSkipped = {};
-	// let daysSkippedUpdate = {};
+	let daysSkippedUpdate = {};
 	useEffect(() => {
 		for (let day of holidays) {
 			daysSkipped[new Date(day).toDateString()] = true;
@@ -62,14 +62,14 @@ function Main() {
 		setEtaDays(round);
 	}, [holidays]);
 
-	// useEffect(() => {
-	// 	for (let day of holidaysUpdate) {
-	// 		daysSkippedUpdate[new Date(day).toDateString()] = true;
-	// 	}
-	// 	sumDaysUpdate()
-	// 	setEtaDateModalUpdate(`-> ${tUpdate.getDate()}/${tUpdate.getMonth() + 1}/${tUpdate.getFullYear()}`);
-	// 	setEtaDaysModalUpdate(roundUpdate);
-	// }, [holidaysUpdate]);
+	useEffect(() => {
+		for (let day of holidaysUpdate) {
+			daysSkippedUpdate[new Date(day).toDateString()] = true;
+		}
+		sumDaysUpdate()
+		setEtaDateModalUpdate(`-> ${tUpdate.getDate()}/${tUpdate.getMonth() + 1}/${tUpdate.getFullYear()}`);
+		setEtaDaysModalUpdate(roundUpdate);
+	}, [holidaysUpdate]);
 
 
 	const timeHtml = (day) => {
@@ -83,7 +83,7 @@ function Main() {
 		}
 		setTimePerWeekUpdate(tmp_update.reduce((a, b) => parseInt(a) + parseInt(b), 0))
 		setDaysModalUpdate(tmp_update)
-		
+
 	};
 
 
@@ -98,9 +98,9 @@ function Main() {
 		localStorage.setItem("hours", hoursModalDetalles);
 	})
 
-	// useEffect(() => {
-	// 	recountUpdate()
-	// },[startUpdate, daysModalUpdate,hoursModalUpdate,timePerWeekUpdate])
+	useEffect(() => {
+		recountUpdate()
+	}, [startUpdate, daysModalUpdate, hoursModalUpdate, timePerWeekUpdate])
 
 	function recount() {
 		let dia = document.getElementById("dia");
@@ -130,17 +130,16 @@ function Main() {
 			setHolidays(datesBeforeTarget)
 			setDates(dates)
 			localStorage.setItem('dates', dates)
-			console.log(h)
 		}
 		sumDays()
 	};
 
-	// function recountUpdate() {
-	// 	const datesBeforeTarget = dates.filter(date => new Date(start) <= new Date(date));
-	// 	setHolidaysUpdate(datesBeforeTarget)
-	// 	sumDaysUpdate()
+	function recountUpdate() {
+		const datesBeforeTarget = dates.filter(date => new Date(start) <= new Date(date));
+		setHolidaysUpdate(datesBeforeTarget)
+		sumDaysUpdate()
 
-	// };
+	};
 
 	function sumDays() {
 		if (timePerWeek !== 0) {
@@ -152,7 +151,7 @@ function Main() {
 				else {
 					h += parseInt(document.getElementById(dayIndex).value);
 				}
-				
+
 				round++
 				dayIndex = (dayIndex + 1) % 7
 				t = t.setDate(t.getDate() + 1)
@@ -162,25 +161,25 @@ function Main() {
 			t = new Date(t)
 		}
 	}
-	// function sumDaysUpdate() {
-	// 	if (timePerWeekUpdate !== 0) {
-	// 		while (hUpdate < hoursModalUpdate) {
-	// 			if (daysSkippedUpdate[tUpdate.toDateString()]) {
-	// 				console.log("Festivo Update: " + tUpdate.toDateString())
-	// 			}
+	function sumDaysUpdate() {
+		if (timePerWeekUpdate !== 0) {
+			while (hUpdate < hoursModalUpdate) {
+				if (daysSkippedUpdate[tUpdate.toDateString()]) {
+					console.log("Festivo Update: " + tUpdate.toDateString())
+				}
 
-	// 			else {
-	// 				hUpdate += parseInt(document.getElementById(dayIndexUpdate).value);
-	// 			}
-	// 			roundUpdate++
-	// 			dayIndexUpdate = (dayIndexUpdate + 1) % 7
-	// 			tUpdate = tUpdate.setDate(tUpdate.getDate() + 1)
-	// 			tUpdate = new Date(tUpdate)
-	// 		}
-	// 		tUpdate = tUpdate.setDate(tUpdate.getDate() - 1)
-	// 		tUpdate = new Date(tUpdate)
-	// 	}
-	// }
+				else {
+					hUpdate += parseInt(document.getElementsByClassName("update" + dayIndexUpdate)[0].value);
+				}
+				roundUpdate++
+				dayIndexUpdate = (dayIndexUpdate + 1) % 7
+				tUpdate = tUpdate.setDate(tUpdate.getDate() + 1)
+				tUpdate = new Date(tUpdate)
+			}
+			tUpdate = tUpdate.setDate(tUpdate.getDate() - 1)
+			tUpdate = new Date(tUpdate)
+		}
+	}
 
 	const clearStorage = () => {
 		localStorage.clear();
@@ -263,21 +262,25 @@ function Main() {
 						</tbody>
 					</table>
 					<br />
-					<span>Horas a hacer: <input type="number" name="goal" id="goal" min="1" value={hoursModalUpdate || 0} onChange={(e)=>setHoursModalUpdate(e.target.value)}/>
+					<span>Horas a hacer: <input type="number" name="goal" id="goal" min="1" value={hoursModalUpdate || 0} onChange={(e) => setHoursModalUpdate(e.target.value)} />
 					</span>
 					<br />
 					<p>Horas por semana: <span id="sumModal">{timePerWeekUpdate}</span></p>
 					<p>ETA: <span id="dateModal">{etaDaysModalUpdate}</span> dias <span id="diaModal">{etaDateModalUpdate}</span></p>
 					<br />
-					<input type='button' value="Update" onClick={() => updateObjective({
-						id: idUpdate,
-						start: startUpdate,
-						goal: hoursModalUpdate,
-						daysHours: daysModalUpdate,
-						totalWeek: timePerWeekUpdate,
-						etaDays: etaDaysModalUpdate,
-						etaDate: etaDateModalUpdate
-					})}></input>
+					<input type='button' value="Update" onClick={() => {
+						updateObjective({
+							id: idUpdate,
+							start: startUpdate,
+							goal: hoursModalUpdate,
+							daysHours: daysModalUpdate,
+							totalWeek: timePerWeekUpdate,
+							etaDays: etaDaysModalUpdate,
+							etaDate: etaDateModalUpdate
+						})
+						modalUpdate.close()
+					}
+					}></input>
 					<input type='button' value="Cerrar" onClick={() => modalUpdate.close()}></input>
 				</dialog>
 
